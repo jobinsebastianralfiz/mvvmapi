@@ -8,4 +8,6 @@ class APIConstants{
  static String getPosts='posts';
  static String getPost='posts';
 
+ static String postComment='comments';
+
 }

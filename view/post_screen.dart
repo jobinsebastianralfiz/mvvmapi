@@ -1,3 +1,4 @@
+import 'package:apimvvm/view/post_detail_view.dart';
 import 'package:apimvvm/viewmodel/post_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ class _PostScreenState extends State<PostScreen> {
   void initState() {
     super.initState();
     Future.microtask(
-            () => Provider.of<PostViewModel>(context, listen: false).fetchPosts());
+        () => Provider.of<PostViewModel>(context, listen: false).fetchPosts());
   }
 
   @override
@@ -142,7 +143,12 @@ class PostCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // Navigate to post details
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PostDetailView(
+                        postId: index+1,
+                      )));
         },
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -217,7 +223,8 @@ class PostCard extends StatelessWidget {
           ),
         ),
       ),
-    ).animate(delay: Duration(milliseconds: 100 * index))
+    )
+        .animate(delay: Duration(milliseconds: 100 * index))
         .fadeIn(duration: const Duration(milliseconds: 300))
         .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad);
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:apimvvm/core/api_constants.dart';
+import 'package:apimvvm/models/comment_model.dart';
 
 import '../models/post_model.dart';
 import 'package:http/http.dart' as http;
@@ -37,6 +38,35 @@ class APIServices {
       return Post.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to load Post");
+    }
+  }
+
+  Future<List<Comment>> getPostComments(int postId) async {
+    final url =
+        Uri.parse('$baseUrl/posts/${postId}/${APIConstants.postComment}');
+
+    final respose = await http.get(url);
+
+    if (respose.statusCode == 200) {
+      List<dynamic> jsonList = jsonDecode(respose.body);
+
+      return jsonList.map((json) => Comment.fromJson(json)).toList();
+    } else {
+      throw Exception("Failed to laod Comments");
+    }
+  }
+
+  Future<List<Comment>> getCommentsByPostId(int postId) async {
+    final url = Uri.parse('$baseUrl/comments?postId=${postId}');
+
+    final respose = await http.get(url);
+
+    if (respose.statusCode == 200) {
+      List<dynamic> jsonList = jsonDecode(respose.body);
+
+      return jsonList.map((json) => Comment.fromJson(json)).toList();
+    } else {
+      throw Exception("Failed to laod Comments");
     }
   }
 }
